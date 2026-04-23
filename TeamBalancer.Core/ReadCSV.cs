@@ -4,9 +4,9 @@ using TeamBalancer.Model;
 
 namespace TeamBalancer.Core;
 
-public class ReadCSV
+public static class ReadCSV
 {
-    public ReadCSV(string path)
+    public static List<Player> ReadPlayersDatabase(string path)
     {
         using var reader = new StreamReader(path); 
         using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
@@ -15,7 +15,9 @@ public class ReadCSV
 
         foreach (var player in players)
         {
-            Console.WriteLine($"Name: {player.Name}, Rate: {player.Rating}");
+            Console.WriteLine($"# Name: {player.Name}; Rate: {player.Rating};");
         }
+
+        return players;
     }
 }

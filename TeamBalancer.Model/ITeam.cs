@@ -1,6 +1,6 @@
 ﻿namespace TeamBalancer.Model;
 
-internal interface ITeam
+public interface ITeam
 {
-    public List<IPlayer> Players { get; set; }
+    public List<Player> Players { get; set; }
 }
