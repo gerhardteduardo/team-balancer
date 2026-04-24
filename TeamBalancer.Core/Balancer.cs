@@ -1,4 +1,5 @@
-﻿using TeamBalancer.Model;
+﻿using System.Numerics;
+using TeamBalancer.Model;
 
 namespace TeamBalancer.Core;
 
@@ -21,18 +22,27 @@ public static class Balancer
 
     public static (Team teamA, Team teamB) GreedyAlgorithm(List<Player> players)
     {
-        players = [.. players.OrderByDescending(p => p.Rating)];
+        var sortedPlayers = players.OrderByDescending(p => p.Rating).ToList();
 
-        Team teamA = new()
-        {
-            Players = [.. players.Where((p, i) => i % 2 == 0)]
-        }; 
-        
-        Team teamB = new()
-        {
-            Players = [.. players.Where((p, i) => i % 2 != 0)]
-        };
+        Team teamA = new() { Players = [] };
+        Team teamB = new() { Players = [] };
 
+        double sumA = 0;
+        double sumB = 0;
+
+        foreach (var player in sortedPlayers)
+        {
+            if (sumA <= sumB)
+            {
+                teamA.Players.Add(player);
+                sumA += player.Rating;
+            }
+            else
+            {
+                teamB.Players.Add(player);
+                sumB += player.Rating;
+            }
+        }
         return (teamA, teamB);
     }
 }
