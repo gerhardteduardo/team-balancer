@@ -1,5 +1,4 @@
-﻿using System.Numerics;
-using TeamBalancer.Model;
+﻿using TeamBalancer.Model;
 
 namespace TeamBalancer.Core;
 
@@ -43,6 +42,20 @@ public static class Balancer
                 sumB += player.Rating;
             }
         }
+        return (teamA, teamB);
+    }
+
+    public static (Team teamA, Team teamB) GreedyAlgorithmWithPlayerPosition(List<Player> players)
+    {
+        List<Player> backPlayers = [.. players.Where(p => p.Position == EPosition.Back)];
+        List<Player> frontPlayers = [.. players.Where(p => p.Position == EPosition.Front)];
+
+        (Team backTeamA, Team backTeamB) = GreedyAlgorithm(backPlayers);
+        (Team frontTeamA, Team frontTeamB) = GreedyAlgorithm(frontPlayers);
+
+        Team teamA = new() { Players = [.. backTeamA.Players, .. frontTeamA.Players] };
+        Team teamB = new() { Players = [.. backTeamB.Players, .. frontTeamB.Players] };
+
         return (teamA, teamB);
     }
 }

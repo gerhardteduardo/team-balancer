@@ -8,7 +8,7 @@ public static class ReadCSV
 {
     public static List<Player> ReadPlayersDatabase(string path)
     {
-        using var reader = new StreamReader(path); 
+        using var reader = new StreamReader(path);
         using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
 
         var players = csv.GetRecords<Player>().ToList();
