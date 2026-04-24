@@ -15,7 +15,7 @@ public static class ReadCSV
 
         foreach (var player in players)
         {
-            Console.WriteLine($"# Name: {player.Name}; Rate: {player.Rating};");
+            Console.WriteLine($"# Name: {player.Name};\t Rate: {player.Rating};\t Position: {player.Position}");
         }
 
         return players;
