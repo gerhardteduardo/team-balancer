@@ -10,7 +10,7 @@ public interface IPlayer
 
 public enum EPosition
 {
-    Goalkeeper = 0,
-    Back = 1,
-    Front = 2,
+    Goalkeeper,
+    Defense,
+    Attack,
 }

@@ -47,8 +47,8 @@ public static class Balancer
 
     public static (Team teamA, Team teamB) GreedyAlgorithmWithPlayerPosition(List<Player> players)
     {
-        List<Player> backPlayers = [.. players.Where(p => p.Position == EPosition.Back)];
-        List<Player> frontPlayers = [.. players.Where(p => p.Position == EPosition.Front)];
+        List<Player> backPlayers = [.. players.Where(p => p.Position == EPosition.Defense)];
+        List<Player> frontPlayers = [.. players.Where(p => p.Position == EPosition.Attack)];
 
         (Team backTeamA, Team backTeamB) = GreedyAlgorithm(backPlayers);
         (Team frontTeamA, Team frontTeamB) = GreedyAlgorithm(frontPlayers);
