@@ -21,7 +21,12 @@ public static class Balancer
 
     public static (Team teamA, Team teamB) GreedyAlgorithm(List<Player> players)
     {
-        var sortedPlayers = players.OrderByDescending(p => p.Rating).ToList();
+        var rnd = new Random();
+        var tieredPlayers = players
+            .OrderByDescending(p => p.Rating)
+            .Chunk(2)
+            .SelectMany(pair => pair.OrderBy(x => rnd.Next()))
+            .ToList();
 
         Team teamA = new() { Players = [] };
         Team teamB = new() { Players = [] };
@@ -29,7 +34,7 @@ public static class Balancer
         double sumA = 0;
         double sumB = 0;
 
-        foreach (var player in sortedPlayers)
+        foreach (var player in tieredPlayers)
         {
             if (sumA <= sumB)
             {
@@ -57,5 +62,5 @@ public static class Balancer
         Team teamB = new() { Players = [.. backTeamB.Players, .. frontTeamB.Players] };
 
         return (teamA, teamB);
-    }
+    } 
 }
