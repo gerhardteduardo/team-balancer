@@ -4,21 +4,6 @@ namespace TeamBalancer.Core;
 
 public static class Balancer
 {
-    public static double SumPlayersRating(List<Player> players)
-    {
-        return players.Sum(p => p.Rating);
-    }
-
-    public static double AvaragePlayers(List<Player> players)
-    {
-        return players.Average(p => p.Rating);
-    }
-
-    public static double AvarageTeam(Team team)
-    {
-        return team.Players.Average(p => p.Rating);
-    }
-
     public static (Team teamA, Team teamB) GreedyAlgorithm(List<Player> players)
     {
         var rnd = new Random();
@@ -28,8 +13,8 @@ public static class Balancer
             .SelectMany(pair => pair.OrderBy(x => rnd.Next()))
             .ToList();
 
-        Team teamA = new() { Players = [] };
-        Team teamB = new() { Players = [] };
+        List<Player> playersA = [];
+        List<Player> playersB = [];
 
         double sumA = 0;
         double sumB = 0;
@@ -38,28 +23,32 @@ public static class Balancer
         {
             if (sumA <= sumB)
             {
-                teamA.Players.Add(player);
+                playersA.Add(player);
                 sumA += player.Rating;
             }
             else
             {
-                teamB.Players.Add(player);
+                playersB.Add(player);
                 sumB += player.Rating;
             }
         }
+
+        Team teamA = new(playersA);
+        Team teamB = new(playersB);
+
         return (teamA, teamB);
     }
 
     public static (Team teamA, Team teamB) GreedyAlgorithmWithPlayerPosition(List<Player> players)
     {
-        List<Player> backPlayers = [.. players.Where(p => p.Position == EPosition.Defense)];
-        List<Player> frontPlayers = [.. players.Where(p => p.Position == EPosition.Attack)];
+        List<Player> defensePlayers = [.. players.Where(p => p.Position == EPosition.Defense)];
+        List<Player> attackPlayers = [.. players.Where(p => p.Position == EPosition.Attack)];
 
-        (Team backTeamA, Team backTeamB) = GreedyAlgorithm(backPlayers);
-        (Team frontTeamA, Team frontTeamB) = GreedyAlgorithm(frontPlayers);
+        (Team backTeamA, Team backTeamB) = GreedyAlgorithm(defensePlayers);
+        (Team frontTeamA, Team frontTeamB) = GreedyAlgorithm(attackPlayers);
 
-        Team teamA = new() { Players = [.. backTeamA.Players, .. frontTeamA.Players] };
-        Team teamB = new() { Players = [.. backTeamB.Players, .. frontTeamB.Players] };
+        Team teamA = new([.. backTeamA.Players, .. frontTeamA.Players]);
+        Team teamB = new([.. backTeamB.Players, .. frontTeamB.Players]);
 
         return (teamA, teamB);
     } 

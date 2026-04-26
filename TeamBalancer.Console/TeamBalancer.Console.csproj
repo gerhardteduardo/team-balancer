@@ -9,6 +9,13 @@
 
   <ItemGroup>
     <None Remove="Mock\Players.csv" />
+    <None Remove="Mock\PlayerStatics.csv" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Mock\PlayerStatics.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
