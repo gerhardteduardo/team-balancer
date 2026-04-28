@@ -15,7 +15,7 @@ CreateTeams(players);
 static List<Player> LoadPlayers()
 {
     string path = ".\\Mock\\PlayerStatics.csv";
-    List<PlayerStatistics> statistics = ReadCSV.ReadPlayersRatingDatabase(path);
+    List<PlayerStatistics> statistics = ReadCSV.ReadPlayersDatabase(path);
 
     return [.. statistics
         .GroupBy(p => p.Name)
