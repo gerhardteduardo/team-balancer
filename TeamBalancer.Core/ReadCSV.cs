@@ -7,15 +7,22 @@ namespace TeamBalancer.Core;
 
 public static class ReadCSV
 {
-    public static List<Player> ReadPlayersMatching(string path)
+    public static List<Player> ReadPlayersDatabase(string path)
     {
         using var reader = new StreamReader(path);
         using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
+
         var players = csv.GetRecords<Player>().ToList();
+
+        foreach (var player in players)
+        {
+            Console.WriteLine($"# Name: {player.Name};\t Rate: {player.Rating};\t Position: {player.Position}");
+        }
+
         return players;
     }
 
-    public static List<PlayerStatistics> ReadPlayersDatabase(string path)
+    public static List<PlayerStatistics> ReadPlayersRatingDatabase(string path)
     {
         var config = new CsvConfiguration(CultureInfo.InvariantCulture)
         {
@@ -25,22 +32,13 @@ public static class ReadCSV
         using var reader = new StreamReader(path);
         using var csv = new CsvReader(reader, config);
 
-        csv.Context.RegisterClassMap<PlayerStatisticsMap>();
-        csv.Read();
+        var players = csv.GetRecords<PlayerStatistics>().ToList();
 
-        return [.. csv.GetRecords<PlayerStatistics>()];
-    }
+        //foreach (var player in players)
+        //{
+        //    Console.WriteLine($"# Defense: {player.Defense};\t Attack: {player.Attack};\t Name: {player.Name}");
+        //}
 
-    private sealed class PlayerStatisticsMap : ClassMap<PlayerStatistics>
-    {
-        public PlayerStatisticsMap()
-        {
-            Map(m => m.Name).Index(1);
-            Map(m => m.Skill).Index(2);
-            Map(m => m.Defense).Index(3);
-            Map(m => m.Attack).Index(4);
-            Map(m => m.Stamina).Index(5);
-            Map(m => m.Tactical).Index(6);
-        }
+        return players;
     }
 }
